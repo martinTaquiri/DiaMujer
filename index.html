@@ -22,16 +22,18 @@
 
         /* Contenedor principal con efecto cristal */
         .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.70); /* Más transparente para ver lo que cae detrás */
+            backdrop-filter: blur(8px);
             border-radius: 20px;
             padding: 40px;
             max-width: 650px;
+            width: 85%; /* Se ajusta mejor a pantallas */
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             z-index: 10;
             margin: 20px;
             border: 1px solid rgba(255, 255, 255, 0.5);
+            box-sizing: border-box;
         }
 
         /* Estilo del Logo */
@@ -39,13 +41,14 @@
             max-width: 250px;
             height: auto;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
         }
 
         /* Tipografía */
         h1 {
             color: #9d2427;
             font-size: 2.5em;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-weight: 700;
         }
 
@@ -53,15 +56,15 @@
             color: #795548;
             font-size: 1.2em;
             font-weight: 400;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             letter-spacing: 1px;
         }
 
         p {
             color: #4a4a4a;
-            line-height: 1.8;
+            line-height: 1.6;
             font-size: 1.1em;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .highlight {
@@ -96,7 +99,7 @@
             font-size: 1.2rem;
             text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8);
             animation: fall-name linear forwards;
-            opacity: 0.85;
+            opacity: 0.9;
         }
 
         /* Estilo específico para las flores */
@@ -104,40 +107,49 @@
             animation: fall-flower linear forwards;
         }
 
-        /* Animación para las flores (caen y giran) */
+        /* Animación para las flores */
         @keyframes fall-flower {
-            0% {
-                transform: translateY(-10vh) rotate(0deg) scale(0.8);
-                opacity: 0;
-            }
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 0.9; }
-            100% {
-                transform: translateY(110vh) rotate(360deg) scale(1.2);
-                opacity: 0;
-            }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
-        /* Animación para los nombres (caen con un ligero balanceo, sin girar por completo para que se puedan leer) */
+        /* Animación para los nombres */
         @keyframes fall-name {
-            0% {
-                transform: translateY(-10vh) rotate(-5deg) scale(0.9);
-                opacity: 0;
-            }
+            0% { transform: translateY(-10vh) rotate(-5deg) scale(0.9); opacity: 0; }
             10% { opacity: 1; }
             50% { transform: translateY(50vh) rotate(5deg) scale(1); }
             90% { opacity: 0.9; }
-            100% {
-                transform: translateY(110vh) rotate(-5deg) scale(0.9);
-                opacity: 0;
-            }
+            100% { transform: translateY(110vh) rotate(-5deg) scale(0.9); opacity: 0; }
         }
 
-        /* Diseño responsivo */
+        /* DISEÑO RESPONSIVO ESTRICTO PARA CELULARES */
         @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            .card { padding: 30px 20px; }
-            .falling-name { font-size: 1rem; }
+            .card { 
+                padding: 25px 15px; /* Reducimos drásticamente el espacio interno */
+                margin: 10px;
+                width: 90%;
+            }
+            .logo-container img { 
+                max-width: 160px; /* Logo más pequeño */
+                margin-bottom: 10px; 
+            }
+            h1 { 
+                font-size: 1.6em; /* Título principal más compacto */
+            }
+            h2 { 
+                font-size: 0.9em; 
+                margin-bottom: 15px;
+            }
+            p { 
+                font-size: 0.9em; /* Texto más pequeño */
+                line-height: 1.4;
+                margin-bottom: 10px;
+            }
+            .falling-name { 
+                font-size: 1rem !important; /* Nombres ligeramente más pequeños para que no tapen todo */
+            }
         }
     </style>
 </head>
@@ -174,47 +186,35 @@
             const item = document.createElement('div');
             item.classList.add('falling-item');
             
-            // Decidir aleatoriamente si será una flor o un nombre (aprox 40% nombres, 60% flores)
             const isName = Math.random() < 0.4;
             
             if (isName) {
-                // Configurar como nombre
                 item.innerText = names[Math.floor(Math.random() * names.length)];
                 item.classList.add('falling-name');
-                
-                // Variar un poco el tamaño de los nombres
-                const nameSize = Math.random() * 0.5 + 1; // Entre 1rem y 1.5rem
+                const nameSize = Math.random() * 0.4 + 0.9; // Ajustado para no ser tan grande
                 item.style.fontSize = nameSize + 'rem';
             } else {
-                // Configurar como flor
                 item.innerText = flowers[Math.floor(Math.random() * flowers.length)];
                 item.classList.add('falling-flower');
-                
-                // Variar el tamaño de las flores
-                const flowerSize = Math.random() * 1.5 + 1;
+                const flowerSize = Math.random() * 1.2 + 1;
                 item.style.fontSize = flowerSize + 'rem';
             }
             
-            // Posición horizontal aleatoria
-            item.style.left = Math.random() * 90 + 'vw'; // Hasta 90vw para evitar que los nombres largos se salgan de la pantalla
+            item.style.left = Math.random() * 85 + 'vw'; // Margen de seguridad para que no desborde en móviles
             
-            // Duración de la caída aleatoria (los nombres caen un poco más lento para poder leerlos)
             const baseDuration = isName ? 8 : 5;
             const duration = Math.random() * 5 + baseDuration;
             item.style.animationDuration = duration + 's';
             
             container.appendChild(item);
             
-            // Limpiar el DOM
             setTimeout(() => {
                 item.remove();
             }, duration * 1000);
         }
 
-        // Crear elementos continuamente
         setInterval(createFallingItem, 450);
 
-        // Crear algunos elementos iniciales al cargar
         for(let i=0; i<12; i++){
             setTimeout(createFallingItem, i * 250);
         }
