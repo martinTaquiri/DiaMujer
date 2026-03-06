@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Día de la Mujer - CISAJ Leoncio Prado</title>
+    <style>
+        /* Estilos generales */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Contenedor principal con efecto cristal */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 650px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            margin: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Estilo del Logo */
+        .logo-container img {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Tipografía */
+        h1 {
+            color: #9d2427;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: #795548;
+            font-size: 1.2em;
+            font-weight: 400;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: #4a4a4a;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #9d2427;
+            font-weight: bold;
+        }
+
+        /* Contenedor de los elementos animados */
+        #falling-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Clase base para los elementos que caen */
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        /* Estilo específico para los nombres */
+        .falling-name {
+            color: #9d2427;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8);
+            animation: fall-name linear forwards;
+            opacity: 0.85;
+        }
+
+        /* Estilo específico para las flores */
+        .falling-flower {
+            animation: fall-flower linear forwards;
+        }
+
+        /* Animación para las flores (caen y giran) */
+        @keyframes fall-flower {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 0.9; }
+            100% {
+                transform: translateY(110vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Animación para los nombres (caen con un ligero balanceo, sin girar por completo para que se puedan leer) */
+        @keyframes fall-name {
+            0% {
+                transform: translateY(-10vh) rotate(-5deg) scale(0.9);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            50% { transform: translateY(50vh) rotate(5deg) scale(1); }
+            90% { opacity: 0.9; }
+            100% {
+                transform: translateY(110vh) rotate(-5deg) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* Diseño responsivo */
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            .card { padding: 30px 20px; }
+            .falling-name { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="falling-container"></div>
+
+    <div class="card">
+        <div class="logo-container">
+            <img src="cisajLogo.png" alt="Logo CISAJ Leoncio Prado">
+        </div>
+        
+        <h1>¡Feliz Día de la Mujer!</h1>
+        <h2>8 DE MARZO</h2>
+        
+        <p>Hoy conmemoramos la fuerza, la dedicación y la valentía de todas las mujeres que día a día construyen una sociedad más justa y equitativa.</p>
+        
+        <p>Un reconocimiento especial a las profesionales que, con su esfuerzo y compromiso, impulsan la administración de justicia en el <span class="highlight">CISAJ Leoncio Prado</span> y la <span class="highlight">Corte Superior de Justicia de Huánuco</span>.</p>
+        
+        <p><em>Que su labor siga siendo fuente de inspiración.</em></p>
+    </div>
+
+    <script>
+        const container = document.getElementById('falling-container');
+        
+        const flowers = ['🌹', '🌸', '🌺', '🌷', '🏵️'];
+        const names = [
+            'Elena', 'Neyrelinda', 'Karen', 'Flor', 'Ada', 'Keissy', 
+            'Sheila', 'Gloria', 'Vanessa', 'Eloisa', 'Madeleine', 
+            'Milka', 'Jakelin', 'Nelly', 'Astrid', 'Emily', 'Beny', 'Fransheska'
+        ];
+
+        function createFallingItem() {
+            const item = document.createElement('div');
+            item.classList.add('falling-item');
+            
+            // Decidir aleatoriamente si será una flor o un nombre (aprox 40% nombres, 60% flores)
+            const isName = Math.random() < 0.4;
+            
+            if (isName) {
+                // Configurar como nombre
+                item.innerText = names[Math.floor(Math.random() * names.length)];
+                item.classList.add('falling-name');
+                
+                // Variar un poco el tamaño de los nombres
+                const nameSize = Math.random() * 0.5 + 1; // Entre 1rem y 1.5rem
+                item.style.fontSize = nameSize + 'rem';
+            } else {
+                // Configurar como flor
+                item.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+                item.classList.add('falling-flower');
+                
+                // Variar el tamaño de las flores
+                const flowerSize = Math.random() * 1.5 + 1;
+                item.style.fontSize = flowerSize + 'rem';
+            }
+            
+            // Posición horizontal aleatoria
+            item.style.left = Math.random() * 90 + 'vw'; // Hasta 90vw para evitar que los nombres largos se salgan de la pantalla
+            
+            // Duración de la caída aleatoria (los nombres caen un poco más lento para poder leerlos)
+            const baseDuration = isName ? 8 : 5;
+            const duration = Math.random() * 5 + baseDuration;
+            item.style.animationDuration = duration + 's';
+            
+            container.appendChild(item);
+            
+            // Limpiar el DOM
+            setTimeout(() => {
+                item.remove();
+            }, duration * 1000);
+        }
+
+        // Crear elementos continuamente
+        setInterval(createFallingItem, 450);
+
+        // Crear algunos elementos iniciales al cargar
+        for(let i=0; i<12; i++){
+            setTimeout(createFallingItem, i * 250);
+        }
+    </script>
+
+</body>
+</html>
